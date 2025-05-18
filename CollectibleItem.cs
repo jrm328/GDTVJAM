@@ -9,6 +9,7 @@ public class CollectibleItem : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             InventoryManager.Instance.AddItem(itemData);
+            TooltipUI.Instance?.ShowTooltip($"Collected {itemData.itemName}!");
             Destroy(gameObject);
         }
     }

@@ -29,6 +29,21 @@ public class GameManager : MonoBehaviour
         InventoryManager.Instance.RefreshInventoryUI();
     }
 
+    public void ModifyTrust(FactionData faction, float amount)
+    {
+        float adjustedAmount = amount;
+
+        if (amount > 0)
+            adjustedAmount *= faction.trustGainMultiplier;
+        else
+            adjustedAmount *= faction.trustLossMultiplier;
+
+        faction.trustLevel = Mathf.Clamp(faction.trustLevel + adjustedAmount, 0, 100);
+        factionPanelUI.RefreshTrustBar(faction);
+
+        Debug.Log($"Modified trust with {faction.factionName}: {adjustedAmount}. New trust: {faction.trustLevel}");
+    }
+
     public void OpenFactionPanel(string factionName)
     {
         FactionData faction = allFactions.Find(f => f.factionName == factionName);

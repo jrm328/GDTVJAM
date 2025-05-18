@@ -1,6 +1,7 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -11,6 +12,22 @@ public class InventoryUI : MonoBehaviour
 
     public void RefreshUI(Dictionary<ItemData, int> inventory)
     {
+        // 🧹 Step 1: Remove slots for items no longer in inventory
+        var keysToRemove = new List<ItemData>();
+        foreach (var kvp in slotDict)
+        {
+            if (!inventory.ContainsKey(kvp.Key))
+            {
+                Destroy(kvp.Value);
+                keysToRemove.Add(kvp.Key);
+            }
+        }
+        foreach (var key in keysToRemove)
+        {
+            slotDict.Remove(key);
+        }
+
+        // 🔁 Step 2: Create or update visible slots
         foreach (var item in inventory)
         {
             if (!slotDict.ContainsKey(item.Key))
@@ -20,7 +37,7 @@ public class InventoryUI : MonoBehaviour
                 slotDict[item.Key] = slot;
             }
 
-            slotDict[item.Key].transform.GetChild(1).GetComponent<Text>().text = item.Value.ToString();
+            slotDict[item.Key].transform.GetChild(1).GetComponent<TMP_Text>().text = item.Value.ToString();
         }
     }
 }
