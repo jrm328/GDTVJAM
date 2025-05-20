@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86180fe25a9157a4eaa1686499d2f85a, type: 3}
   m_Name: Crow Faction Data
   m_EditorClassIdentifier: 
-  factionName: Crow's
+  factionName: Crows
   factionIcon: {fileID: 21300000, guid: e2b7ed68194463c41a67e0fdfe7886fb, type: 3}
-  trustLevel: 10
-  hostileThreshold: 20
-  friendlyThreshold: 75
+  trustLevel: 30
+  hostileThreshold: 35
+  friendlyThreshold: 80
   preferredItems:
   - {fileID: 11400000, guid: 4e07753327907ed44ab014dac52db103, type: 2}

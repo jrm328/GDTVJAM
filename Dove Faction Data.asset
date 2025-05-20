@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86180fe25a9157a4eaa1686499d2f85a, type: 3}
-  m_Name: Blue Jay Faction Data
+  m_Name: Dove Faction Data
   m_EditorClassIdentifier: 
-  factionName: Blue Jays
+  factionName: Dove
   factionIcon: {fileID: 21300000, guid: e2b7ed68194463c41a67e0fdfe7886fb, type: 3}
-  trustLevel: 60
-  hostileThreshold: 20
-  friendlyThreshold: 65
+  trustLevel: 65
+  hostileThreshold: 15
+  friendlyThreshold: 75
   preferredItems:
-  - {fileID: 11400000, guid: 57c15ab402319a247bbfc7186fcc3b3a, type: 2}
-  - {fileID: 11400000, guid: 37f2f0b591538294bb410fec5fdf68a0, type: 2}
+  - {fileID: 11400000, guid: 4e07753327907ed44ab014dac52db103, type: 2}
