@@ -7,6 +7,8 @@ public class IsometricPlayerController : MonoBehaviour
     [Header("Movement Settings")]
     public float walkSpeed = 3f;
     public float sprintSpeed = 6f;
+    public Transform playerVisual; // Assign this to your model child
+
 
     private float currentSpeed;
     private Vector2 moveInput;
@@ -15,10 +17,12 @@ public class IsometricPlayerController : MonoBehaviour
     private Rigidbody rb;
     private PlayerInputActions inputActions;
     private DynamicCameraZoom cameraZoom;
+    private Animator animator;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
         inputActions = new PlayerInputActions();
         cameraZoom = Object.FindFirstObjectByType<DynamicCameraZoom>();
     }
@@ -60,11 +64,16 @@ public class IsometricPlayerController : MonoBehaviour
         rb.linearVelocity = new Vector3(targetVelocity.x, rb.linearVelocity.y, targetVelocity.z);
 
         // ✅ Smoothly rotate player to face movement direction
-        if (isometricDirection.sqrMagnitude > 0.01f)
+        if (isometricDirection.sqrMagnitude > 0.01f && playerVisual != null)
         {
             Quaternion targetRotation = Quaternion.LookRotation(isometricDirection, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+            playerVisual.rotation = Quaternion.Slerp(playerVisual.rotation, targetRotation, Time.deltaTime * 10f);
         }
+
+        // Set animation speed parameter (based on movement magnitude)
+        float movementSpeed = rb.linearVelocity.magnitude;
+        animator?.SetFloat("Speed", movementSpeed);
+
 
         // ✅ Trigger camera zoom logic
         bool isCurrentlyMoving = moveInput.sqrMagnitude > 0.01f;

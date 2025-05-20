@@ -1,15 +1,23 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "NewFaction", menuName = "Peckonomics/Faction")]
+public enum TrustState { Hostile, Neutral, Friendly }
+
+[CreateAssetMenu(menuName = "Faction/Faction Data")]
 public class FactionData : ScriptableObject
 {
     public string factionName;
-    [Range(0, 100)] public float trustLevel = 50;
+    public Sprite factionIcon;
+    public float trustLevel = 50f;
 
-    public float trustGainMultiplier = 1f;   // e.g., Crows gain less trust
-    public float trustLossMultiplier = 1f;
+    public float hostileThreshold = 20f;
+    public float friendlyThreshold = 75f;
 
-    public Sprite factionPortrait;
-    public List<ItemData> preferredItems;
+    public TrustState GetTrustState()
+    {
+        if (trustLevel <= hostileThreshold) return TrustState.Hostile;
+        if (trustLevel >= friendlyThreshold) return TrustState.Friendly;
+        return TrustState.Neutral;
+    }
 }
+
