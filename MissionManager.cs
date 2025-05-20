@@ -1,23 +1,25 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MissionManager : MonoBehaviour
 {
     public static MissionManager Instance;
 
-    public GameObject collectiblePrefab; // Assign your CollectibleItem prefab
-
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void StartBreadcrumbMission(ItemData item, Vector3 center, FactionData sparrowFaction)
     {
         SpawnCollectibles(item, 3, center);
         FactionZoneManager.Instance.EnableFaction("Sparrows");
-
-        // Dictator path � intimidate first, build trust later
         FactionTrustManager.Instance.ModifyTrust(sparrowFaction, +5f);
     }
 
@@ -25,8 +27,6 @@ public class MissionManager : MonoBehaviour
     {
         SpawnCollectibles(item, 1, center);
         FactionZoneManager.Instance.EnableFaction("Crows");
-
-        // Utopian peace offer
         FactionTrustManager.Instance.ModifyTrust(crowFaction, +10f);
     }
 
@@ -35,18 +35,37 @@ public class MissionManager : MonoBehaviour
         SpawnCollectibles(worm, 2, center);
         SpawnCollectibles(cap, 1, center + Vector3.right * 2);
         FactionZoneManager.Instance.EnableFaction("Blue Jays");
-
-        // Pragmatist initial favor
         FactionTrustManager.Instance.ModifyTrust(blueJayFaction, +5f);
     }
 
     private void SpawnCollectibles(ItemData item, int count, Vector3 center)
     {
+        if (item == null)
+        {
+            Debug.LogError("❌ Attempted to spawn collectibles with a null ItemData.");
+            return;
+        }
+
+        if (item.worldPrefab == null)
+        {
+            Debug.LogError($"❌ Item '{item.itemName}' has no worldPrefab assigned.");
+            return;
+        }
+
         for (int i = 0; i < count; i++)
         {
-            Vector3 offset = new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2));
-            GameObject obj = Instantiate(collectiblePrefab, center + offset, Quaternion.identity);
-            obj.GetComponent<CollectibleItem>().itemData = item;
+            Vector3 offset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
+            GameObject obj = Instantiate(item.worldPrefab, center + offset, Quaternion.identity);
+
+            CollectibleItem collectible = obj.GetComponent<CollectibleItem>();
+            if (collectible != null)
+            {
+                collectible.itemData = item;
+            }
+            else
+            {
+                Debug.LogWarning($"⚠️ Spawned prefab '{obj.name}' is missing a CollectibleItem script.");
+            }
         }
     }
 }

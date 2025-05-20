@@ -20,6 +20,8 @@ public class FactionPanelUI : MonoBehaviour
     private FactionData currentFaction;
     private PlayerInputActions inputActions;
 
+    private ItemData selectedTradeItem;
+
     private void Awake()
     {
         inputActions = new PlayerInputActions();
@@ -49,6 +51,16 @@ public class FactionPanelUI : MonoBehaviour
         if (firstSelectableUIElement != null)
         {
             EventSystem.current.SetSelectedGameObject(firstSelectableUIElement);
+        }
+
+        if (currentFaction.preferredItems !=null && currentFaction.preferredItems.Count > 0)
+        {
+            selectedTradeItem = currentFaction.preferredItems[0];
+        } 
+        else
+        {
+            selectedTradeItem = null;
+            Debug.Log("No trade items");
         }
 
         UpdateTradeButtonInteractable();
@@ -88,12 +100,19 @@ public class FactionPanelUI : MonoBehaviour
 
     private void UpdateTradeButtonInteractable()
     {
-        bool hasItem = InventoryManager.Instance.GetItemCount(testTradeItem) > 0;
+        if (selectedTradeItem == null)
+        {
+            tradeButton.interactable = false;
+            TooltipUI.Instance?.ShowTooltip("This faction has no preferred items!");
+            return;
+        }
+
+        bool hasItem = InventoryManager.Instance.GetItemCount(selectedTradeItem) > 0;
         tradeButton.interactable = hasItem;
 
         if (!hasItem)
         {
-            TooltipUI.Instance?.ShowTooltip($"You don't have any {testTradeItem.itemName}s to trade!");
+            TooltipUI.Instance?.ShowTooltip($"You don't have any {selectedTradeItem.itemName} to trade!");
         }
     }
 
@@ -105,13 +124,13 @@ public class FactionPanelUI : MonoBehaviour
 
     public void OnTradeButtonClicked()
     {
-        if (currentFaction == null || testTradeItem == null)
+        if (currentFaction == null || selectedTradeItem == null)
         {
             TooltipUI.Instance.ShowTooltip("No faction or item selected.");
             return;
         }
 
-        TradeManager.Instance.OfferItemToFaction(currentFaction, testTradeItem);
+        TradeManager.Instance.OfferItemToFaction(currentFaction, selectedTradeItem);
         UpdateTrustDisplay(); // Refresh immediately after trade
         UpdateTradeButtonInteractable(); // Update button state
     }

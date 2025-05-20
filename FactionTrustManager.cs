@@ -19,6 +19,10 @@ public class FactionTrustManager : MonoBehaviour
 
     public void ModifyTrust(FactionData faction, float amount)
     {
+        Debug.Log($"[ModifyTrust] Faction: {faction?.factionName ?? "null"}");
+        Debug.Log($"[ModifyTrust] GameManager.Instance: {(GameManager.Instance == null ? "null" : "valid")}");
+        Debug.Log($"[ModifyTrust] GameManager.Instance.factionPanelUI: {(GameManager.Instance?.factionPanelUI == null ? "null" : "valid")}");
+
         float oldTrust = faction.trustLevel;
         faction.trustLevel = Mathf.Clamp(faction.trustLevel + amount, 0f, 100f);
 

@@ -4,7 +4,7 @@ public class FactionZoneManager : MonoBehaviour
 {
     public static FactionZoneManager Instance;
 
-    public GameObject sparrowZone, crowZone, blueJayZone;
+    public GameObject sparrowZone, crowZone, blueJayZone, doveZone;
 
     private void Awake()
     {
@@ -14,14 +14,26 @@ public class FactionZoneManager : MonoBehaviour
 
     public void EnableFaction(string name)
     {
+        Debug.Log($"[FactionZoneManager] Enabling zone: {name}");
+
         switch (name)
         {
             case "Sparrows":
-                sparrowZone.SetActive(true); break;
+                if (sparrowZone == null) Debug.LogError("Sparrow Zone is not assigned!");
+                sparrowZone?.SetActive(true);
+                break;
             case "Crows":
-                crowZone.SetActive(true); break;
+                if (crowZone == null) Debug.LogError("Crow Zone is not assigned!");
+                crowZone?.SetActive(true);
+                break;
             case "Blue Jays":
-                blueJayZone.SetActive(true); break;
+                if (blueJayZone == null) Debug.LogError("Blue Jay Zone is not assigned!");
+                blueJayZone?.SetActive(true);
+                break;
+            case "Doves":
+                if (doveZone == null) Debug.LogError("Dove Zone is not assigned!");
+                doveZone?.SetActive(true);
+                break;
         }
     }
 }
