@@ -41,7 +41,7 @@ public class TradeManager : MonoBehaviour
         InventoryManager.Instance.RemoveItem(item);
 
         // Adjust faction trust
-        GameManager.Instance.ModifyTrust(faction, trustChange);
+        FactionTrustManager.Instance.ModifyTrust(faction, trustChange);
 
         // Feedback
         string message = isPreferred

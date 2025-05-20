@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 public enum TrustState { Hostile, Neutral, Friendly }
@@ -12,6 +12,8 @@ public class FactionData : ScriptableObject
 
     public float hostileThreshold = 20f;
     public float friendlyThreshold = 75f;
+
+    public List<ItemData> preferredItems; // ✅ Add this line
 
     public TrustState GetTrustState()
     {

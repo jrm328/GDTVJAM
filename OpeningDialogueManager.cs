@@ -6,6 +6,10 @@ public class OpeningDialogueManager : MonoBehaviour
     public Sprite pigeonIcon;
     public ItemData breadcrumbItem, shinyItem, wormItem, bottleCapItem;
     public Transform playerTransform;
+    public FactionData sparrowFaction;
+    public FactionData crowFaction;
+    public FactionData blueJayFaction;
+
 
     private void Start()
     {
@@ -30,16 +34,16 @@ public class OpeningDialogueManager : MonoBehaviour
 
     private void HandleDictatorPath()
     {
-        MissionManager.Instance.StartBreadcrumbMission(breadcrumbItem, playerTransform.position);
+        MissionManager.Instance.StartBreadcrumbMission(breadcrumbItem, playerTransform.position, sparrowFaction);
     }
 
     private void HandleUtopianPath()
     {
-        MissionManager.Instance.StartShinyMission(shinyItem, playerTransform.position);
+        MissionManager.Instance.StartShinyMission(shinyItem, playerTransform.position, crowFaction);
     }
 
     private void HandlePragmatistPath()
     {
-        MissionManager.Instance.StartWormMission(wormItem, bottleCapItem, playerTransform.position);
+        MissionManager.Instance.StartWormMission(wormItem, bottleCapItem, playerTransform.position, blueJayFaction);
     }
 }

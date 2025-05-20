@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FactionTrustManager : MonoBehaviour
 {
@@ -6,8 +6,15 @@ public class FactionTrustManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void ModifyTrust(FactionData faction, float amount)
@@ -17,24 +24,25 @@ public class FactionTrustManager : MonoBehaviour
 
         TrustState newState = faction.GetTrustState();
 
-        // Optional: Trigger logic when crossing thresholds
+        // Optional: trigger milestone events
         if (faction.trustLevel <= faction.hostileThreshold && oldTrust > faction.hostileThreshold)
             OnBecameHostile(faction);
         else if (faction.trustLevel >= faction.friendlyThreshold && oldTrust < faction.friendlyThreshold)
             OnBecameFriendly(faction);
 
-        FactionPanelUI.Instance?.RefreshTrustBar(faction);
+        // ✅ Refresh the UI via GameManager
+        GameManager.Instance.factionPanelUI?.RefreshTrustBar(faction);
     }
 
     private void OnBecameHostile(FactionData faction)
     {
         Debug.Log($"{faction.factionName} is now Hostile!");
-        // Trigger a bad event here
+        // Add event triggers here if needed
     }
 
     private void OnBecameFriendly(FactionData faction)
     {
         Debug.Log($"{faction.factionName} is now Friendly!");
-        // Trigger a bonus event or mission
+        // Add event triggers here if needed
     }
 }

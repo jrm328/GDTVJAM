@@ -26,4 +26,26 @@ public class GameEndingManager : MonoBehaviour
         else
             TriggerNeutralEnding();
     }
+
+    private void TriggerUnityEnding()
+    {
+        Debug.Log("Unity Ending triggered!");
+        // TODO: show end screen, play animation, etc.
+    }
+
+    private void TriggerCollapseEnding()
+    {
+        Debug.Log("Collapse Ending triggered!");
+    }
+
+    private void TriggerIsolationEnding()
+    {
+        Debug.Log("Isolation Ending triggered!");
+    }
+
+    private void TriggerNeutralEnding()
+    {
+        Debug.Log("Neutral Ending triggered!");
+    }
+
 }
