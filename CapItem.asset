@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CapItem
   m_EditorClassIdentifier: 
   itemName: Caps
-  icon: {fileID: 21300000, guid: e2b7ed68194463c41a67e0fdfe7886fb, type: 3}
-  worldPrefab: {fileID: 4101974173324798107, guid: c2234ca50471df84e817e0f579ae52df, type: 3}
+  icon: {fileID: 21300000, guid: 2097bdbe321d04200a8086a837d3b198, type: 3}
+  worldPrefab: {fileID: 734854433353331050, guid: e14df076c2e6e4d1a9e3092b5a5d08d3, type: 3}

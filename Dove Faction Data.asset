@@ -19,3 +19,4 @@ MonoBehaviour:
   friendlyThreshold: 75
   preferredItems:
   - {fileID: 11400000, guid: 4e07753327907ed44ab014dac52db103, type: 2}
+  - {fileID: 11400000, guid: 57c15ab402319a247bbfc7186fcc3b3a, type: 2}

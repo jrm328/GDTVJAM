@@ -2,14 +2,23 @@ using UnityEngine;
 
 public class FactionZoneManager : MonoBehaviour
 {
-    public static FactionZoneManager Instance;
 
     public GameObject sparrowZone, crowZone, blueJayZone, doveZone;
 
+    public static FactionZoneManager Instance;
+
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject); // Add this line
+
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void EnableFaction(string name)

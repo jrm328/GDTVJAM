@@ -45,8 +45,8 @@ public class TradeManager : MonoBehaviour
 
         // Feedback
         string message = isPreferred
-            ? $"{faction.factionName} is impressed by your {item.itemName}!"
-            : $"{faction.factionName} accepts your {item.itemName}.";
+            ? $"{faction.factionName} are impressed by your {item.itemName}!"
+            : $"{faction.factionName} accept your {item.itemName}.";
 
         TooltipUI.Instance?.ShowTooltip(message);
         Debug.Log(message);

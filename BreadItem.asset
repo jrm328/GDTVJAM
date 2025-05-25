@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BreadItem
   m_EditorClassIdentifier: 
   itemName: Bread
-  icon: {fileID: 21300000, guid: b4f1d2b27d7f738458fda0f61ff1212c, type: 3}
+  icon: {fileID: 21300000, guid: 4edbd2c8fc7f3f241b3230d001ce6908, type: 3}
   worldPrefab: {fileID: 299479364310041742, guid: ecb5ea2703fb1d5499f1bd2cb31697a2, type: 3}
