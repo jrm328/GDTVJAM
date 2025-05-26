@@ -34,19 +34,22 @@ public class OpeningDialogueManager : MonoBehaviour
 
     private void HandleDictatorPath()
     {
-        GameState.playerChoice = PlayerArchetype.Dictator;
+        GameStateManager.Instance.SetLeadershipStyle(LeadershipStyle.Dictator);
+        Object.FindFirstObjectByType<GameInitializer>().ApplyLeadershipStyle(LeadershipStyle.Dictator);
         MissionManager.Instance.StartBreadcrumbMission(breadcrumbItem, playerTransform.position, sparrowFaction);
     }
 
     private void HandleUtopianPath()
     {
-        GameState.playerChoice = PlayerArchetype.Utopian;
+        GameStateManager.Instance.SetLeadershipStyle(LeadershipStyle.Utopian);
+        Object.FindFirstObjectByType<GameInitializer>().ApplyLeadershipStyle(LeadershipStyle.Utopian);
         MissionManager.Instance.StartShinyMission(shinyItem, playerTransform.position, crowFaction);
     }
 
     private void HandlePragmatistPath()
     {
-        GameState.playerChoice = PlayerArchetype.Pragmatist;
+        GameStateManager.Instance.SetLeadershipStyle(LeadershipStyle.Pragmatist);
+        Object.FindFirstObjectByType<GameInitializer>().ApplyLeadershipStyle(LeadershipStyle.Pragmatist);
         MissionManager.Instance.StartWormMission(wormItem, bottleCapItem, playerTransform.position, blueJayFaction);
     }
 }

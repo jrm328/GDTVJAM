@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 
-public enum PlayerArchetype { Dictator, Utopian, Pragmatist }
-
 public class GameInitializer : MonoBehaviour
 {
     [Header("Faction Data References")]
@@ -19,13 +17,24 @@ public class GameInitializer : MonoBehaviour
     [Header("Spawn Settings")]
     public Transform playerSpawnPoint;
 
+    [Header("Game State Prefab (Optional)")]
+    [Tooltip("Only needed if GameStateManager might not already be in the scene.")]
+    [SerializeField] private GameStateManager gameStatePrefab;
+
     private void Awake()
     {
-        PlayerArchetype playerArchetype = GameState.playerChoice;
-        InitializeFactions(playerArchetype);
+        // Ensure GameStateManager exists
+        if (GameStateManager.Instance == null && gameStatePrefab != null)
+        {
+            Instantiate(gameStatePrefab);
+            Debug.Log("[GameInitializer] Instantiated GameStateManager from prefab.");
+        }
+
+        //LeadershipStyle playerStyle = GameStateManager.Instance.PlayerLeadershipStyle;
+       // InitializeFactions(playerStyle);
     }
 
-    private void InitializeFactions(PlayerArchetype playerArchetype)
+    private void InitializeFactions(LeadershipStyle style)
     {
         // 🪶 Sparrows
         sparrows.trustLevel = 40;
@@ -49,9 +58,9 @@ public class GameInitializer : MonoBehaviour
 
         Vector3 spawnCenter = playerSpawnPoint.position;
 
-        switch (playerArchetype)
+        switch (style)
         {
-            case PlayerArchetype.Dictator:
+            case LeadershipStyle.Dictator:
                 doves.trustLevel -= 15;
                 crows.trustLevel += 10;
                 sparrows.trustLevel -= 5;
@@ -59,7 +68,7 @@ public class GameInitializer : MonoBehaviour
                 MissionManager.Instance.StartBreadcrumbMission(breadcrumbs, spawnCenter, sparrows);
                 break;
 
-            case PlayerArchetype.Utopian:
+            case LeadershipStyle.Utopian:
                 doves.trustLevel += 10;
                 blueJays.trustLevel += 5;
                 crows.trustLevel -= 5;
@@ -67,7 +76,7 @@ public class GameInitializer : MonoBehaviour
                 MissionManager.Instance.StartShinyMission(shinyThing, spawnCenter, crows);
                 break;
 
-            case PlayerArchetype.Pragmatist:
+            case LeadershipStyle.Pragmatist:
                 blueJays.trustLevel += 10;
                 sparrows.trustLevel += 5;
                 doves.trustLevel += 5;
@@ -76,6 +85,11 @@ public class GameInitializer : MonoBehaviour
                 break;
         }
 
-        Debug.Log("[GameInitializer] Faction trust levels set based on player choice: " + playerArchetype);
+        Debug.Log("[GameInitializer] Faction trust levels set based on leadership style: " + style);
+    }
+
+    public void ApplyLeadershipStyle(LeadershipStyle style)
+    {
+        InitializeFactions(style);
     }
 }

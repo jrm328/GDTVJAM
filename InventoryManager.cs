@@ -20,6 +20,7 @@ public class InventoryManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         //else Destroy(gameObject);
+        RefreshInventoryUI();
     }
 
     /// <summary>
@@ -41,10 +42,22 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     public void RefreshInventoryUI()
     {
-        if (inventoryUI != null)
-            inventoryUI.RefreshUI(inventory);
-        else
+        if (inventoryUI == null)
+        {
             Debug.LogWarning("Inventory UI not assigned in InventoryManager.");
+            return;
+        }
+
+        // Hide inventory UI if empty
+        if (inventory == null || inventory.Count == 0)
+        {
+            inventoryUI.gameObject.SetActive(false);
+        }
+        else
+        {
+            inventoryUI.gameObject.SetActive(true);
+            inventoryUI.RefreshUI(inventory);
+        }
     }
 
     /// <summary>

@@ -8,7 +8,9 @@ public class CollectibleItem : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log($"Collected {itemData.itemName}");
             InventoryManager.Instance.AddItem(itemData);
+            MissionManager.Instance.RegisterObjectiveCompleted(itemData);
             TooltipUI.Instance?.ShowTooltip($"Collected {itemData.itemName}!");
             Destroy(gameObject);
         }

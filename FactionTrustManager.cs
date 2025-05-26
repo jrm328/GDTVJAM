@@ -33,8 +33,12 @@ public class FactionTrustManager : MonoBehaviour
         else if (faction.trustLevel >= faction.friendlyThreshold && oldTrust < faction.friendlyThreshold)
             OnBecameFriendly(faction);
 
-        // ✅ Refresh the UI via GameManager
+        // ✅ Refresh other UI that cares about trust
         GameManager.Instance.factionPanelUI?.RefreshTrustBar(faction);
+
+        // ✅ 🆕 Refresh journal UI if open
+        if (JournalUI.Instance != null)
+            JournalUI.Instance.RefreshUI();
     }
 
     private void OnBecameHostile(FactionData faction)

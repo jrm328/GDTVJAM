@@ -34,9 +34,11 @@ public class DialogueSystem : MonoBehaviour
             speakerIcon.gameObject.SetActive(icon != null);
         }
 
+        // Clear old choices
         foreach (Transform child in choiceContainer)
             Destroy(child.gameObject);
 
+        // Create buttons for each choice
         foreach (var choice in choices)
         {
             var btn = Instantiate(choiceButtonPrefab, choiceContainer);

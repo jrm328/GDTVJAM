@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Crow Faction Data
   m_EditorClassIdentifier: 
   factionName: Crows
-  factionIcon: {fileID: 21300000, guid: e2b7ed68194463c41a67e0fdfe7886fb, type: 3}
-  trustLevel: 70
+  factionIcon: {fileID: 21300000, guid: d257baa9ab0acae4eaca1356c07fca98, type: 3}
+  trustLevel: 35
   hostileThreshold: 35
   friendlyThreshold: 80
+  defaultMission: {fileID: 11400000, guid: 3c29c81c16b93ff46ac83b668ee319a5, type: 2}
   preferredItems:
   - {fileID: 11400000, guid: 37f2f0b591538294bb410fec5fdf68a0, type: 2}
   - {fileID: 11400000, guid: 57c15ab402319a247bbfc7186fcc3b3a, type: 2}
