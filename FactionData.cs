@@ -14,6 +14,7 @@ public class FactionData : ScriptableObject
     public float friendlyThreshold = 75f;
 
     public MissionData defaultMission;
+    public MissionChainData missionChain; // Assign in Inspector
     public List<ItemData> preferredItems;
 
     public TrustState GetTrustState()

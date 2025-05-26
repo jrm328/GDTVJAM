@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   factionName: Sparrows
   factionIcon: {fileID: 21300000, guid: da3e77fa133a23e4fb0b630bbbc405e6, type: 3}
-  trustLevel: 45
+  trustLevel: 40
   hostileThreshold: 25
   friendlyThreshold: 70
-  defaultMission: {fileID: 0}
+  defaultMission: {fileID: 11400000, guid: 016e1e6feee6c3c4f99adb9877b3c8ab, type: 2}
+  missionChain: {fileID: 11400000, guid: 926210ce931c6ea42be60da06b22d2a4, type: 2}
   preferredItems:
-  - {fileID: 11400000, guid: 2b6e7e8c66940854a8b6f26f70a63560, type: 2}
-  - {fileID: 11400000, guid: 4e07753327907ed44ab014dac52db103, type: 2}
+  - {fileID: 11400000, guid: 00ad64199c5e08a4d9e8b54a2dd70ec3, type: 2}

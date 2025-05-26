@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   factionName: Blue Jays
   factionIcon: {fileID: 21300000, guid: eebd046737e34604d8cc5a6c99c1ec57, type: 3}
-  trustLevel: 50
+  trustLevel: 55
   hostileThreshold: 20
   friendlyThreshold: 65
-  defaultMission: {fileID: 0}
+  defaultMission: {fileID: 11400000, guid: c3613358e80fb0f4db82cad7b4b3adbb, type: 2}
+  missionChain: {fileID: 11400000, guid: 785a68462e48df648ad502996f875055, type: 2}
   preferredItems:
-  - {fileID: 11400000, guid: 57c15ab402319a247bbfc7186fcc3b3a, type: 2}
+  - {fileID: 11400000, guid: cb8e48b0df7b15e4cbf20b8942c4bed5, type: 2}

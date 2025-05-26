@@ -2,5 +2,6 @@ public enum LeadershipStyle
 {
     Dictator,
     Utopian,
-    Pragmatist
+    Pragmatist,
+    None
 }

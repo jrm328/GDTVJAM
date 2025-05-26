@@ -1,15 +1,17 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class OpeningDialogueManager : MonoBehaviour
 {
     public Sprite pigeonIcon;
-    public ItemData breadcrumbItem, shinyItem, wormItem, bottleCapItem;
-    public Transform playerTransform;
+
+    public ItemData breadcrumbItem;
+    public ItemData shinyItem;
+    public ItemData seedsItem;
+
     public FactionData sparrowFaction;
     public FactionData crowFaction;
     public FactionData blueJayFaction;
-
 
     private void Start()
     {
@@ -20,9 +22,9 @@ public class OpeningDialogueManager : MonoBehaviour
     {
         var choices = new List<DialogueChoice>
         {
-            new DialogueChoice("Dictator: Secure the breadcrumbs!", HandleDictatorPath),
-            new DialogueChoice("Utopian: Offer peace to the crows.", HandleUtopianPath),
-            new DialogueChoice("Pragmatist: Trade with the blue jays.", HandlePragmatistPath)
+            new DialogueChoice("Dictator: Secure the breadcrumbs!", () => HandleOpeningPath(LeadershipStyle.Dictator)),
+            new DialogueChoice("Utopian: Offer peace to the crows.", () => HandleOpeningPath(LeadershipStyle.Utopian)),
+            new DialogueChoice("Pragmatist: Trade with the blue jays.", () => HandleOpeningPath(LeadershipStyle.Pragmatist))
         };
 
         DialogueSystem.Instance.ShowDialogue(
@@ -32,24 +34,19 @@ public class OpeningDialogueManager : MonoBehaviour
         );
     }
 
-    private void HandleDictatorPath()
+    private void HandleOpeningPath(LeadershipStyle style)
     {
-        GameStateManager.Instance.SetLeadershipStyle(LeadershipStyle.Dictator);
-        Object.FindFirstObjectByType<GameInitializer>().ApplyLeadershipStyle(LeadershipStyle.Dictator);
-        MissionManager.Instance.StartBreadcrumbMission(breadcrumbItem, playerTransform.position, sparrowFaction);
-    }
+        GameStateManager.Instance.SetLeadershipStyle(style);
 
-    private void HandleUtopianPath()
-    {
-        GameStateManager.Instance.SetLeadershipStyle(LeadershipStyle.Utopian);
-        Object.FindFirstObjectByType<GameInitializer>().ApplyLeadershipStyle(LeadershipStyle.Utopian);
-        MissionManager.Instance.StartShinyMission(shinyItem, playerTransform.position, crowFaction);
-    }
-
-    private void HandlePragmatistPath()
-    {
-        GameStateManager.Instance.SetLeadershipStyle(LeadershipStyle.Pragmatist);
-        Object.FindFirstObjectByType<GameInitializer>().ApplyLeadershipStyle(LeadershipStyle.Pragmatist);
-        MissionManager.Instance.StartWormMission(wormItem, bottleCapItem, playerTransform.position, blueJayFaction);
+        // Apply leadership effects (trust, item spawns, etc.)
+        GameInitializer initializer = Object.FindFirstObjectByType<GameInitializer>();
+        if (initializer != null)
+        {
+            initializer.ApplyLeadershipStyle(style);
+        }
+        else
+        {
+            Debug.LogError("❌ GameInitializer not found in scene.");
+        }
     }
 }

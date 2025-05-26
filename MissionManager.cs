@@ -8,36 +8,67 @@ public class MissionManager : MonoBehaviour
     private void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
-        }
         else
-        {
             Destroy(gameObject);
+    }
+
+    public void StartMission(MissionData mission)
+    {
+        if (mission == null)
+        {
+            Debug.LogWarning("❌ Tried to start a null mission.");
+            return;
         }
+
+        activeMission = Instantiate(mission);
+        activeMission.currentProgress = 0;
+        activeMission.isCompleted = false;
+
+        Debug.Log($"🟢 Started mission: {activeMission.missionName}");
+
+        // Spawn items at random zone from GameInitializer
+        Transform zone = GameInitializer.Instance?.GetRandomSpawnZone();
+        Vector3 spawnPos = zone != null ? zone.position : Vector3.zero;
+
+        SpawnCollectibles(activeMission.targetItem, activeMission.objectiveCount, spawnPos);
+
+        JournalUI.Instance?.RefreshUI();
     }
 
-    public void StartBreadcrumbMission(ItemData item, Vector3 center, FactionData sparrowFaction)
+    public void RegisterObjectiveCompleted(ItemData item)
     {
-        SpawnCollectibles(item, 3, center);
-        FactionTrustManager.Instance.ModifyTrust(sparrowFaction, +5f);
-        JournalUI.Instance.RefreshUI();
-    }
+        if (activeMission == null || activeMission.isCompleted) return;
+        if (item != activeMission.targetItem) return;
 
-    public void StartShinyMission(ItemData item, Vector3 center, FactionData crowFaction)
-    {
-        SpawnCollectibles(item, 1, center);
-        FactionTrustManager.Instance.ModifyTrust(crowFaction, +10f);
-        JournalUI.Instance.RefreshUI();
-    }
+        activeMission.currentProgress++;
+        Debug.Log($"✅ Mission Progress: {activeMission.currentProgress}/{activeMission.objectiveCount}");
 
-    public void StartWormMission(ItemData worm, ItemData cap, Vector3 center, FactionData blueJayFaction)
-    {
-        SpawnCollectibles(worm, 2, center);
-        SpawnCollectibles(cap, 3, center + Vector3.right * 2);
-        FactionTrustManager.Instance.ModifyTrust(blueJayFaction, +5f);
-        JournalUI.Instance.RefreshUI();
+        if (activeMission.currentProgress >= activeMission.objectiveCount)
+        {
+            activeMission.isCompleted = true;
+            Debug.Log($"🏆 Mission '{activeMission.missionName}' completed!");
 
+            // Trust reward
+            FactionTrustManager.Instance.ModifyTrust(activeMission.assignedFaction, activeMission.trustReward);
+
+            // UI feedback
+            TooltipUI.Instance?.ShowTooltip(
+                $"Mission Complete!\n+{activeMission.trustReward} Trust with {activeMission.assignedFaction.factionName}"
+            );
+            JournalUI.Instance?.RefreshUI();
+
+            // Chain progression
+            MissionTracker.Instance?.RegisterMissionComplete(activeMission.assignedFaction);
+
+            activeMission = null;
+
+            // Optional: Check for win/lose condition
+            if (GameEndingManager.Instance != null && GameEndingManager.Instance.AllChainsResolved())
+            {
+                GameEndingManager.Instance.EvaluateEnding();
+            }
+        }
     }
 
     private void SpawnCollectibles(ItemData item, int count, Vector3 center)
@@ -55,45 +86,15 @@ public class MissionManager : MonoBehaviour
 
             CollectibleItem collectible = obj.GetComponent<CollectibleItem>();
             if (collectible != null)
-            {
                 collectible.itemData = item;
-            }
-            else
-            {
-                Debug.LogWarning($"⚠️ Spawned prefab '{obj.name}' is missing a CollectibleItem script.");
-            }
         }
     }
 
-    public void StartMission(MissionData mission)
+    public MissionData GetActiveMission() => activeMission;
+
+    public void ClearMission()
     {
-        activeMission = Instantiate(mission);
-        activeMission.currentProgress = 0;
-        activeMission.isCompleted = false;
-
-        Debug.Log($"🟢 Started mission: {activeMission.missionName}");
-        SpawnCollectibles(activeMission.targetItem, activeMission.objectiveCount, Vector3.zero); // Replace with accurate spawn center
-    }
-
-    public void RegisterObjectiveCompleted(ItemData item)
-    {
-        if (activeMission == null || activeMission.isCompleted) return;
-        if (item != activeMission.targetItem) return;
-
-        activeMission.currentProgress++;
-        Debug.Log($"✅ Mission Progress: {activeMission.currentProgress}/{activeMission.objectiveCount}");
-
-        if (activeMission.currentProgress >= activeMission.objectiveCount)
-        {
-            activeMission.isCompleted = true;
-            Debug.Log($"🏆 Mission '{activeMission.missionName}' completed!");
-            FactionTrustManager.Instance.ModifyTrust(activeMission.assignedFaction, +10f);
-        }
-    }
-
-    // 🆕 This is the only thing you needed to add:
-    public MissionData GetActiveMission()
-    {
-        return activeMission;
+        activeMission = null;
+        JournalUI.Instance?.RefreshUI();
     }
 }

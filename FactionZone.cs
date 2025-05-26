@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class FactionZone : MonoBehaviour
 {
     public string factionName;
@@ -11,20 +12,31 @@ public class FactionZone : MonoBehaviour
         {
             factionInteraction = GetComponent<FactionInteraction>();
         }
+
+        Collider col = GetComponent<Collider>();
+        col.isTrigger = true; // Ensure it's a trigger
     }
 
-    private void OnMouseDown()
+    private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Clicked on faction: " + factionName);
-        //GameManager.Instance.OpenFactionPanel(factionName);
+        if (!other.CompareTag("Player")) return;
 
+        Debug.Log($"[FactionZone] Player entered {factionName}'s area.");
         if (factionInteraction != null)
         {
             factionInteraction.Interact();
         }
         else
         {
-            Debug.LogWarning("FactionInteraction not found on click.");
+            Debug.LogWarning($"[FactionZone] No FactionInteraction found on {factionName}.");
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Player")) return;
+
+        Debug.Log($"[FactionZone] Player exited {factionName}'s area.");
+        DialogueSystem.Instance.Close();
     }
 }

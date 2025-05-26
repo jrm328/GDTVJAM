@@ -6,12 +6,16 @@ using System.Collections.Generic;
 public class JournalUI : MonoBehaviour
 {
     [Header("Mission Section")]
-    public GameObject missionPanel; // ← NEW: The whole panel to toggle
+    public GameObject missionPanel; // Toggles the mission panel on/off
     public TMP_Text missionTitle;
     public TMP_Text missionDesc;
     public TMP_Text missionProgress;
     public Image missionFactionIcon;
+
     public static JournalUI Instance;
+
+    [Header("Trust Section")]
+    public List<FactionTrustUI> factionTrustDisplays;
 
     private void Awake()
     {
@@ -20,9 +24,6 @@ public class JournalUI : MonoBehaviour
         else
             Destroy(gameObject);
     }
-
-    [Header("Trust Section")]
-    public List<FactionTrustUI> factionTrustDisplays;
 
     private void Start()
     {
@@ -33,7 +34,7 @@ public class JournalUI : MonoBehaviour
     {
         var activeMission = MissionManager.Instance.GetActiveMission();
 
-        if (activeMission != null)
+        if (activeMission != null && !activeMission.isCompleted)
         {
             missionPanel.SetActive(true);
 

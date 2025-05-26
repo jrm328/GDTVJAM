@@ -24,62 +24,84 @@ public class FactionInteraction : MonoBehaviour
         {
             new DialogueChoice("I’ll do it.", () =>
             {
-                if (factionData.defaultMission != null)
+                // ✅ Grab next mission from chain
+                MissionData nextMission = MissionTracker.Instance.GetCurrentMission(factionData);
+
+                if (nextMission != null)
                 {
-                    MissionManager.Instance.StartMission(factionData.defaultMission);
+                    MissionManager.Instance.StartMission(nextMission);
+                    TooltipUI.Instance?.ShowTooltip("Mission Accepted!");
                 }
+                else
+                {
+                    TooltipUI.Instance?.ShowTooltip("No more missions from this faction.");
+                }
+
+                JournalUI.Instance?.RefreshUI();
             }),
+
             new DialogueChoice("No way.", () =>
             {
                 FactionTrustManager.Instance.ModifyTrust(factionData, -5f);
-                if (JournalUI.Instance != null)
-                    JournalUI.Instance.RefreshUI();
+                JournalUI.Instance?.RefreshUI();
             }),
-            new DialogueChoice("Let me think about it.", () => {})
+
+            new DialogueChoice("Let me think about it.", () => { })
         };
 
-        // ✅ Add Trade Option BEFORE showing the dialogue
+        // ✅ Get active, incomplete mission (if relevant)
+        MissionData activeMission = MissionManager.Instance.GetActiveMission();
+        bool isMissionTrade = activeMission != null && !activeMission.isCompleted && activeMission.assignedFaction == factionData;
         ItemData tradeItem = GetRelevantTradeItem();
         int owned = tradeItem != null ? InventoryManager.Instance.GetItemCount(tradeItem) : 0;
 
         if (tradeItem != null)
         {
-            string label = owned > 0
-                ? $"Trade {owned}x {tradeItem.itemName}"
-                : $"You need {tradeItem.itemName}";
+            string label = $"Trade {tradeItem.itemName}";
 
             choices.Add(new DialogueChoice(label, () =>
             {
-                if (owned > 0)
+                if (owned <= 0)
+                {
+                    TooltipUI.Instance?.ShowTooltip($"You need {tradeItem.itemName}!");
+                    return;
+                }
+
+                if (isMissionTrade)
+                {
+                    int needed = activeMission.objectiveCount - activeMission.currentProgress;
+                    int toGive = Mathf.Min(owned, needed);
+
+                    for (int i = 0; i < toGive; i++)
+                    {
+                        InventoryManager.Instance.RemoveItem(tradeItem);
+                        MissionManager.Instance.RegisterObjectiveCompleted(tradeItem);
+                    }
+
+                    TooltipUI.Instance?.ShowTooltip($"Traded {toGive}x {tradeItem.itemName} for mission.");
+                }
+                else
                 {
                     InventoryManager.Instance.RemoveItem(tradeItem);
                     FactionTrustManager.Instance.ModifyTrust(factionData, +5f);
-                    Debug.Log($"🟢 Traded 1x {tradeItem.itemName} to {factionData.factionName}");
-
-                    if (JournalUI.Instance != null)
-                        JournalUI.Instance.RefreshUI();
+                    TooltipUI.Instance?.ShowTooltip($"Traded 1x {tradeItem.itemName}.");
                 }
+
+                JournalUI.Instance?.RefreshUI();
             }));
         }
 
-        // ✅ Now show all dialogue choices (including trade)
         DialogueSystem.Instance.ShowDialogue(requestText, factionData.factionIcon, choices);
     }
 
     private ItemData GetRelevantTradeItem()
     {
-        // Priority 1: active mission item
         var mission = MissionManager.Instance.GetActiveMission();
         if (mission != null && mission.assignedFaction == factionData)
-        {
             return mission.targetItem;
-        }
 
-        // Priority 2: first preferred item
         if (factionData.preferredItems != null && factionData.preferredItems.Count > 0)
-        {
             return factionData.preferredItems[0];
-        }
 
         return null;
     }

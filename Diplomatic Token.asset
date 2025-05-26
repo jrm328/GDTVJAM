@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 865cd91a12f71004dabba5bcae451ea9, type: 3}
+  m_Name: Diplomatic Token
+  m_EditorClassIdentifier: 
+  itemName: Diplomatic Token
+  icon: {fileID: 21300000, guid: 96efea8d2cf1c0b4999b8a12b1f57374, type: 3}
+  worldPrefab: {fileID: 4044928147694971879, guid: 5324419ee3ca4074e9807239044e70fc, type: 3}

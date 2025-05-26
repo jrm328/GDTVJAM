@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d25f75f187c82404ea3308de58663f26, type: 3}
+  m_Name: Lost Hatchiling
+  m_EditorClassIdentifier: 
+  missionName: Lost Hatchling
+  description: A baby dove has gone missing. Help us find and return it safely.
+  assignedFaction: {fileID: 11400000, guid: 562e19fa7057cef478e90c594195b8c0, type: 2}
+  objectiveCount: 1
+  targetItem: {fileID: 11400000, guid: 197f1c514e191f84b8a742891d8ba6b8, type: 2}
+  trustReward: 10
+  currentProgress: 0
+  isCompleted: 0

@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   factionName: Dove
   factionIcon: {fileID: 21300000, guid: a53e4d82906ff2d44ac32b2d8efbbf6c, type: 3}
-  trustLevel: 45
+  trustLevel: 70
   hostileThreshold: 15
   friendlyThreshold: 75
-  defaultMission: {fileID: 0}
+  defaultMission: {fileID: 11400000, guid: fd539490621216545a96fcdaf211b376, type: 2}
+  missionChain: {fileID: 11400000, guid: a288230e0dc3663459f87bd8a9bc367f, type: 2}
   preferredItems:
-  - {fileID: 11400000, guid: 4e07753327907ed44ab014dac52db103, type: 2}
-  - {fileID: 11400000, guid: 57c15ab402319a247bbfc7186fcc3b3a, type: 2}
+  - {fileID: 11400000, guid: 09c20220d3c36d947982243dfade722a, type: 2}
